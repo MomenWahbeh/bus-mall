@@ -1,8 +1,8 @@
 'use strict';
 let imagesDiv = document.getElementById('images-div')
 let leftImageElement = document.getElementById('left-image')
-let rightimageElement = document.getElementById('right-image')
-let middleimageElement = document.getElementById('middle-image')
+let rightImageElement = document.getElementById('right-image')
+let middleImageElement = document.getElementById('middle-image')
 let maxAttempts = 25;
 let userAttemptsCounter = 0
 let leftImageIndex;
@@ -49,19 +49,21 @@ function RenderThreeImages() {
    leftImageIndex = generateRandomIndex();
 
    do{
-       rightimageElement === generateRandomIndex();
+       rightImageIndex = generateRandomIndex();
    }while (leftImageIndex === rightImageIndex)
 
-   do {middleimageElement = generateRandomIndex();
+   do {middleImageIndex = generateRandomIndex();
     }while (rightImageIndex === middleImageIndex || leftImageIndex === middleImageIndex)
 
 
 
    leftImageElement.src = Products.allImages[leftImageIndex].source;
    Products.allImages[leftImageIndex].times++;
-   middleimageElement.src = Products.allImages[middleImageIndex].source;
+
+   middleImageElement.src = Products.allImages[middleImageIndex].source;
    Products.allImages[middleImageIndex].times++;
-   rightimageElement.src = Products.allImages[rightImageIndex].source;
+
+   rightImageElement.src = Products.allImages[rightImageIndex].source;
    Products.allImages[rightImageIndex].times++;
 }
 RenderThreeImages();
@@ -75,7 +77,7 @@ function handleUserClick(event){
         if(event.target.id === 'left-image'){
         Products.allImages[leftImageIndex].votes++
 
-    }else if (event.target.id == 'right-image'){
+    }else if (event.target.id = 'right-image'){
         Products.allImages[rightImageIndex].votes++
     }else{ 
         Products.allImages[middleImageIndex].votes++
@@ -98,7 +100,7 @@ function press (){
     for (let i =0; i<Products.allImages.length; i++){
         let result = document.createElement('li')
         let list = document.getElementById("result-list");
-        list.appendChild("result");
+        list.appendChild(result);
         
         result.textContent = Products.allImages[i].name + "had" + Products.allImages[i].votes + "vote, and was seen" + Products.allImages[i].times + " times";
     }
