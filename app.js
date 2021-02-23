@@ -9,7 +9,9 @@ let leftImageIndex;
 let middleImageIndex;
 let rightImageIndex;
    
-
+let productsName=[];
+let productsTimes = [];
+let productsVotes = [];
 
 function Products(name,source){
     this.name=name;
@@ -17,6 +19,7 @@ function Products(name,source){
     this.votes=0;
     this.times = 0;
     Products.allImages.push(this);
+    productsName.push(name)
 }
 Products.allImages=[];
 
@@ -73,7 +76,7 @@ imagesDiv.addEventListener('click',handleUserClick);
 
 function handleUserClick(event){
     userAttemptsCounter++;
-    if(userAttemptsCounter<maxAttempts){
+    if(userAttemptsCounter<=maxAttempts){
         if(event.target.id === 'left-image'){
         Products.allImages[leftImageIndex].votes++
 
@@ -86,26 +89,65 @@ function handleUserClick(event){
 
 }else{
 
-    let list = document.getElementById("result-list");
+    /*let list = document.getElementById("result-list");
     let btn = document.createElement("button")
     list.appendChild(btn);
     btn.textContent= "Show Results"
     btn.addEventListener('click', press)
-    imagesDiv.removeEventListener('click', handleUserClick);
-}
+    imagesDiv.removeEventListener('click', handleUserClick);*/
 
 
-}
-function press (){
+//function press (){
+
     for (let i =0; i<Products.allImages.length; i++){
-        let result = document.createElement('li')
+       /* let result = document.createElement('li')
         let list = document.getElementById("result-list");
         list.appendChild(result);
         
         result.textContent = Products.allImages[i].name + "had" + Products.allImages[i].votes + "vote, and was seen" + Products.allImages[i].times + " times";
+    */
+   productsVotes.push(Products.allImages[i].votes)
+   productsTimes.push(Products.allImages[i].times)
     }
+
+
+   viewChart()
+}
+
 }
 
 
 
 
+
+
+
+
+
+function viewChart() {
+    let ctx = document.getElementById('myChart').getContext('2d');
+    let chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+        // The data for our dataset
+        data: {
+            labels: productsName,
+            datasets: [
+                {
+                    label: ' product votes',
+                    backgroundColor: '#ef8d32',
+                    borderColor: '#ef8d32',
+                    data: productsVotes
+                },
+                {
+                    label: ' product Times',
+                    backgroundColor: '#aa2b1d',
+                    borderColor: '#aa2b1d',
+                    data: productsTimes
+                },
+            ]
+        },
+        // Configuration options go here
+        options: {}
+    });
+}
