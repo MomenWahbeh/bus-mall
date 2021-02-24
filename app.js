@@ -44,6 +44,23 @@ new Products('usb','image/usb.gif');
 new Products('water-can','image/water-can.jpg');
 new Products('wine-glass','image/wine-glass.jpg');
 
+function settingItems() {
+    let data = JSON.stringify(Products.allImages);
+    localStorage.setItem("prodata",data)
+    console.log(data);
+}
+
+// settingItems();
+
+function gettingItems () {
+    let retrievedData = JSON.parse(localStorage.getItem("prodata"));
+    return retrievedData;
+
+}
+
+// gettingItems();
+
+
 function generateRandomIndex() {
     return Math.floor(Math.random()*Products.allImages.length);
 }
@@ -98,6 +115,9 @@ function handleUserClick(event){
 
 
 //function press (){
+    settingItems();
+    let newItem = gettingItems();
+
 
     for (let i =0; i<Products.allImages.length; i++){
        /* let result = document.createElement('li')
@@ -108,6 +128,8 @@ function handleUserClick(event){
     */
    productsVotes.push(Products.allImages[i].votes)
    productsTimes.push(Products.allImages[i].times)
+   Products.allImages[i].votes=Products.allImages[i].votes + newItem[i].votes;
+   Products.allImages[i].times=Products.allImages[i].times + newItem[i].times;
     }
 
 
@@ -148,6 +170,17 @@ function viewChart() {
             ]
         },
         // Configuration options go here
-        options: {}
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        min: 0,
+                        max: 30,
+                        stepSize: 1,
+                        
+                    }
+                }]
+            }
+        }
     });
 }
