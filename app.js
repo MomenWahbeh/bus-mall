@@ -1,14 +1,18 @@
 'use strict';
 let imagesDiv = document.getElementById('images-div')
+
 let leftImageElement = document.getElementById('left-image')
 let rightImageElement = document.getElementById('right-image')
 let middleImageElement = document.getElementById('middle-image')
+
 let maxAttempts = 25;
 let userAttemptsCounter = 0
+
 let leftImageIndex;
 let middleImageIndex;
 let rightImageIndex;
-   
+
+let Images = [];
 let productsName=[];
 let productsTimes = [];
 let productsVotes = [];
@@ -18,11 +22,17 @@ function Products(name,source){
     this.source=source;
     this.votes=0;
     this.times = 0;
+
+
     Products.allImages.push(this);
     productsName.push(name)
 }
 Products.allImages=[];
 
+function setItems() {
+    let data = JSON.stringify(Products.allImages);
+    localStorage.setItem('product' , data);
+}
 new Products('bag','image/bag.jpg');
 new Products('banana','image/banana.jpg');
 new Products('bathroom','image/bathroom.jpg');
@@ -47,18 +57,26 @@ new Products('wine-glass','image/wine-glass.jpg');
 function generateRandomIndex() {
     return Math.floor(Math.random()*Products.allImages.length);
 }
+
+function getItems() {
+    let srtringObject = localStorage.getItem('product')
+    if (srtringObject) {
+      Products.allImages = JSON.parse(srtringObject)
+    }
+
+}
 function RenderThreeImages() {
      
    leftImageIndex = generateRandomIndex();
 
    do{
        rightImageIndex = generateRandomIndex();
-   }while (leftImageIndex === rightImageIndex)
+       middleImageIndex= generateRandomIndex();
+       leftImageIndex = generateRandomIndex();
 
-   do {middleImageIndex = generateRandomIndex();
-    }while (rightImageIndex === middleImageIndex || leftImageIndex === middleImageIndex)
-
-
+   
+    }
+    while ((leftImageIndex === rightImageIndex) || (rightImageIndex)=== (middleImageIndex) || (middleImageIndex === leftImageIndex)  || Images.includes(middleImageIndex) || Images.includes(rightImageIndex) || Images.includes(leftImageIndex))
 
    leftImageElement.src = Products.allImages[leftImageIndex].source;
    Products.allImages[leftImageIndex].times++;
@@ -79,11 +97,13 @@ function handleUserClick(event){
     if(userAttemptsCounter<=maxAttempts){
         if(event.target.id === 'left-image'){
         Products.allImages[leftImageIndex].votes++
-
+        setItems()
     }else if (event.target.id = 'right-image'){
         Products.allImages[rightImageIndex].votes++
+        setItems()
     }else{ 
         Products.allImages[middleImageIndex].votes++
+        setItems()
     }    
     RenderThreeImages();
 
@@ -106,19 +126,15 @@ function handleUserClick(event){
         
         result.textContent = Products.allImages[i].name + "had" + Products.allImages[i].votes + "vote, and was seen" + Products.allImages[i].times + " times";
     */
-   productsVotes.push(Products.allImages[i].votes)
-   productsTimes.push(Products.allImages[i].times)
+   productsVotes.push(Products.allImages[i].votes);
+   productsTimes.push(Products.allImages[i].times);
     }
 
 
-   viewChart()
+   viewChart();
 }
 
 }
-
-
-
-
 
 
 
@@ -150,4 +166,5 @@ function viewChart() {
         // Configuration options go here
         options: {}
     });
+
 }
